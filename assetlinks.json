@@ -1,0 +1,14 @@
+[
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.norodd.cdcalculator",
+      "sha256_cert_fingerprints": [
+        "28:1A:9B:BE:27:D2:7A:A5:1C:30:72:A3:42:EB:F5:88:67:11:62:27:F2:66:39:14:99:6A:BC:D1:D4:61:DE:97"
+      ]
+    }
+  }
+]
