@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="touch-action" content="manipulation">
+<meta name="theme-color" content="#131109">
+<title>Crimson Desert Odds</title>
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cinzel+Decorative:wght@400;700&display=swap" rel="stylesheet">
+<link href="style.css" rel="stylesheet">
+</head>
+<body>
+
+<!-- ── SCREEN 1: Game Select ── -->
+<div class="screen active" id="screen-game">
+  <div class="app-header">
+    <button class="settings-btn" onclick="openSettings()">⚙</button>
+    <div class="app-logo">CRIMSON DESERT</div>
+    <div class="app-title">ODDS CALCULATOR</div>
+    <div class="header-rule"></div>
+  </div>
+  <div class="question-wrap">
+    <div>
+      <div class="question-text">
+        WELCOME, PLAYER<br>
+        <span>WHAT GAME ARE YOU PLAYING?</span>
+      </div>
+    </div>
+    <div class="choice-group">
+      <button class="choice-btn" id="btn-duo" onclick="selectGame('duo')">DUO</button>
+      <button class="choice-btn" id="btn-fc" onclick="selectGame('fc')">FIVE-CARD</button>
+    </div>
+
+    <!-- Opp count — fades in after choosing a game -->
+    <div class="opp-section" id="opp-section">
+      <div class="question-text"><span>HOW MANY OPPONENTS?</span></div>
+      <div class="choice-group" id="opp-btns"></div>
+    </div>
+
+    <div class="guide-link-group">
+      <button class="choice-btn guide-link-btn" onclick="showScreen('screen-guide')">DUO RULES &amp; GUIDE</button>
+      <button class="choice-btn guide-link-btn" onclick="showScreen('screen-guide-fc')">FIVE-CARD RULES &amp; GUIDE</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── SCREEN: Duo Rules & Guide ── -->
+<div class="screen scroll-body" id="screen-guide">
+  <div class="app-header">
+    <button class="back-btn visible" onclick="goBack()">‹</button>
+    <button class="home-btn" onclick="newGame()">⌂</button>
+    <div class="app-logo">CRIMSON DESERT</div>
+    <div class="app-title">DUO GUIDE</div>
+    <div class="header-rule"></div>
+  </div>
+
+  <!-- Overview -->
+  <div class="guide-section">
+    <div class="guide-section-title">WHAT IS DUO?</div>
+    <div class="guide-body">
+      <p>Duo is a card gambling game played with a deck of <strong>20 cards</strong> numbered 1 to 10. Each number has one <strong>Red</strong> card and one <strong>Yellow</strong> card. Red cards are key to forming the most powerful hands.</p>
+      <p>Each player receives <strong>2 cards</strong>. One of each player's cards is visible to everyone at the table — use your opponents' visible cards to read their possible hands and make smarter bets.</p>
+      <p>The player with the highest-ranked hand wins the pot. Duo rewards both card knowledge and psychological play — a bold raise can make opponents fold even when you hold a weak hand.</p>
+    </div>
+  </div>
+
+  <!-- How to Play -->
+  <div class="guide-section">
+    <div class="guide-section-title">HOW TO PLAY</div>
+    <div class="guide-body">
+      <p>Pay the <strong>base ante</strong> to take a seat and start the round. The player with the <strong>First Turn</strong> marker deals the cards and makes the first call.</p>
+      <p>After receiving your 2 cards, you have <strong>10 seconds</strong> to choose an action. If the timer runs out, <strong>Call</strong> is selected automatically.</p>
+      <p>Once all players have acted, cards are revealed. The strongest hand wins the full pot. If you can no longer cover the base ante, you cannot continue playing.</p>
+    </div>
+  </div>
+
+  <!-- Betting Actions -->
+  <div class="guide-section">
+    <div class="guide-section-title">BETTING ACTIONS</div>
+    <div class="guide-action-list">
+      <div class="guide-action">
+        <span class="guide-action-name">CHECK</span>
+        <span class="guide-action-desc">Pass the turn without raising the pot. Only available when no raise has been made yet.</span>
+      </div>
+      <div class="guide-action">
+        <span class="guide-action-name">HALF RAISE</span>
+        <span class="guide-action-desc">Bet half of the total current pot.</span>
+      </div>
+      <div class="guide-action">
+        <span class="guide-action-name">DOUBLE RAISE</span>
+        <span class="guide-action-desc">Bet double the amount raised by the previous player.</span>
+      </div>
+      <div class="guide-action">
+        <span class="guide-action-name">ALL IN</span>
+        <span class="guide-action-desc">Bet all your currently held silver in one move.</span>
+      </div>
+      <div class="guide-action">
+        <span class="guide-action-name">CALL</span>
+        <span class="guide-action-desc">Match the amount raised by the previous player. Auto-selected if the 10-second timer expires.</span>
+      </div>
+      <div class="guide-action">
+        <span class="guide-action-name">FOLD</span>
+        <span class="guide-action-desc">Forfeit the current round and give up your share of the pot.</span>
+      </div>
+    </div>
+    <div class="guide-note">Cards are revealed when the pot can no longer be raised, or when all remaining players match the current bet.</div>
+  </div>
+
+  <!-- Hand Rankings -->
+  <div class="guide-section">
+    <div class="guide-section-title">HAND RANKINGS — STRONGEST TO WEAKEST</div>
+    <div class="guide-hand-list">
+
+      <div class="guide-hand">
+        <div class="guide-hand-left"><span class="rank-badge">S</span></div>
+        <div>
+          <div class="guide-hand-name">Prime Pair</div>
+          <div class="guide-hand-cards">Red 3 + Red 8</div>
+          <div class="guide-hand-desc">The strongest hand in the game. Beats everything except Executor, which loses to it but wins against Superior Pair.</div>
+        </div>
+      </div>
+
+      <div class="guide-hand">
+        <div class="guide-hand-left"><span class="rank-badge">S</span></div>
+        <div>
+          <div class="guide-hand-name">Superior Pair</div>
+          <div class="guide-hand-cards">Red 1 + Red 3, or Red 1 + Red 8</div>
+          <div class="guide-hand-desc">Second strongest. Loses only to Prime Pair. Beats Executor.</div>
+        </div>
+      </div>
+
+      <div class="guide-hand">
+        <div class="guide-hand-left"><span class="rank-badge">S</span></div>
+        <div>
+          <div class="guide-hand-name">Ten Pair</div>
+          <div class="guide-hand-cards">10 + 10 (any color)</div>
+          <div class="guide-hand-desc">Beats everything except Prime Pair and Superior Pair. Beats Executor and High Warden.</div>
+        </div>
+      </div>
+
+      <div class="guide-divider"></div>
+
+      <div class="guide-hand">
+        <div class="guide-hand-left"><span class="rank-badge">A</span></div>
+        <div>
+          <div class="guide-hand-name">Pair</div>
+          <div class="guide-hand-cards">Two cards of the same number (1–9)</div>
+          <div class="guide-hand-desc">Higher number wins. Pair of 9s beats Pair of 8s, and so on. Pair of 1s (One Pair) is the lowest pair.</div>
+        </div>
+      </div>
+
+      <div class="guide-hand">
+        <div class="guide-hand-left"><span class="rank-badge">A</span></div>
+        <div>
+          <div class="guide-hand-name">One-two</div>
+          <div class="guide-hand-cards">1 + 2</div>
+          <div class="guide-hand-desc">Strongest named hand after Pairs. Beats Perfect Nine and all point hands.</div>
+        </div>
+      </div>
+
+      <div class="guide-hand">
+        <div class="guide-hand-left"><span class="rank-badge">A</span></div>
+        <div>
+          <div class="guide-hand-name">One-four</div>
+          <div class="guide-hand-cards">1 + 4</div>
+          <div class="guide-hand-desc">Same tier as One-two but loses directly to it.</div>
+        </div>
+      </div>
+
+      <div class="guide-hand">
+        <div class="guide-hand-left"><span class="rank-badge">A</span></div>
+        <div>
+          <div class="guide-hand-name">One-nine</div>
+          <div class="guide-hand-cards">1 + 9</div>
+          <div class="guide-hand-desc">Loses to One-two and One-four directly.</div>
+        </div>
+      </div>
+
+      <div class="guide-hand">
+        <div class="guide-hand-left"><span class="rank-badge">A</span></div>
+        <div>
+          <div class="guide-hand-name">One-ten</div>
+          <div class="guide-hand-cards">1 + 10</div>
+          <div class="guide-hand-desc">Loses to all One-x hands above it directly.</div>
+        </div>
+      </div>
+
+      <div class="guide-hand">
+        <div class="guide-hand-left"><span class="rank-badge">A</span></div>
+        <div>
+          <div class="guide-hand-name">Four-ten</div>
+          <div class="guide-hand-cards">4 + 10</div>
+          <div class="guide-hand-desc">Loses directly to all One-x hands.</div>
+        </div>
+      </div>
+
+      <div class="guide-hand">
+        <div class="guide-hand-left"><span class="rank-badge">A</span></div>
+        <div>
+          <div class="guide-hand-name">Four-six</div>
+          <div class="guide-hand-cards">4 + 6</div>
+          <div class="guide-hand-desc">The lowest named hand. Still beats Perfect Nine and all point hands.</div>
+        </div>
+      </div>
+
+      <div class="guide-divider"></div>
+
+      <div class="guide-hand">
+        <div class="guide-hand-left"><span class="rank-badge">B</span></div>
+        <div>
+          <div class="guide-hand-name">Perfect Nine</div>
+          <div class="guide-hand-cards">Any two cards where the last digit of their sum is 9</div>
+          <div class="guide-hand-desc">Examples: 1+8, 2+7, 4+5, 9+10. Beats all point hands. Loses to pairs and named hands.</div>
+        </div>
+      </div>
+
+      <div class="guide-divider"></div>
+
+      <div class="guide-hand">
+        <div class="guide-hand-left"><span class="rank-badge">C</span></div>
+        <div>
+          <div class="guide-hand-name">Points (8 down to 1)</div>
+          <div class="guide-hand-cards">Any two cards whose sum's last digit is 1–8</div>
+          <div class="guide-hand-desc">Higher last digit wins. Example: 6+9 = 5 points (15 → last digit 5). 3+6 = 9 → Perfect Nine, not points.</div>
+        </div>
+      </div>
+
+      <div class="guide-hand">
+        <div class="guide-hand-left"><span class="rank-badge">C</span></div>
+        <div>
+          <div class="guide-hand-name">Zero</div>
+          <div class="guide-hand-cards">Any two cards whose sum's last digit is 0</div>
+          <div class="guide-hand-desc">The weakest standard hand. Examples: 5+5, 4+6 would be Zero — but 4+6 is actually Four-six (a named hand), so card combos are checked for named hands first.</div>
+        </div>
+      </div>
+
+    </div>
+    <div class="guide-note">How scoring works: Add your two card numbers together. If the sum is 10 or more, drop the tens digit and keep only the last digit. Example: 6 + 9 = 15 → 5 points.</div>
+  </div>
+
+  <!-- Special Hands -->
+  <div class="guide-section">
+    <div class="guide-section-title">SPECIAL HANDS</div>
+    <div class="guide-body">
+      <p>These hands don't simply win or lose — their outcome depends on what opponents are holding.</p>
+    </div>
+    <div class="guide-hand-list" style="margin-top:10px">
+
+      <div class="guide-hand">
+        <div class="guide-hand-left"><span class="rank-badge special">SP</span></div>
+        <div>
+          <div class="guide-hand-name">Warden</div>
+          <div class="guide-hand-cards">4 + 9 (any color, excluding Red 4 + Red 9)</div>
+          <div class="guide-hand-desc">Triggers a <strong>rematch</strong> if all other players hold One-two or a weaker hand. The current pot carries over to the next round. If a stronger hand is present, Warden loses normally.</div>
+        </div>
+      </div>
+
+      <div class="guide-hand">
+        <div class="guide-hand-left"><span class="rank-badge special">SP</span></div>
+        <div>
+          <div class="guide-hand-name">High Warden</div>
+          <div class="guide-hand-cards">Red 4 + Red 9</div>
+          <div class="guide-hand-desc">Triggers a <strong>rematch</strong> if all other players hold Pair of 9s or a weaker hand. Stronger version of Warden — the rematch threshold is higher. Loses to Ten Pair and above.</div>
+        </div>
+      </div>
+
+      <div class="guide-hand">
+        <div class="guide-hand-left"><span class="rank-badge special">SP</span></div>
+        <div>
+          <div class="guide-hand-name">Judge</div>
+          <div class="guide-hand-cards">3 + 7 (any color)</div>
+          <div class="guide-hand-desc">Achieves a <strong>special win</strong> if the strongest opponent holds Pair of 9s or lower. If a Pair is present at the table, Judge is treated as Zero instead. Beats Warden and High Warden with a rematch.</div>
+        </div>
+      </div>
+
+      <div class="guide-hand">
+        <div class="guide-hand-left"><span class="rank-badge special">SP</span></div>
+        <div>
+          <div class="guide-hand-name">Executor</div>
+          <div class="guide-hand-cards">Red 4 + Red 7</div>
+          <div class="guide-hand-desc">Achieves a <strong>special win</strong> if any opponent holds a Superior Pair — but <strong>loses to Prime Pair</strong>. If no Superior Pair is present, Executor counts as 1 Point. Triggers a rematch against Warden and High Warden.</div>
+        </div>
+      </div>
+
+    </div>
+    <div class="guide-note">When a rematch is triggered, cards are reshuffled and redrawn. The pot from the previous round carries over and grows with new bets.</div>
+  </div>
+
+  <!-- Tips -->
+  <div class="guide-section">
+    <div class="guide-section-title">TIPS FOR WINNING</div>
+    <div class="guide-tip">
+      <div class="guide-tip-title">HEART OF A BEAST</div>
+      <div class="guide-tip-body">Match results aren't decided by hand strength alone. A bold raise with a weak hand can force opponents to fold — making them believe their own cards are inferior.</div>
+    </div>
+    <div class="guide-tip">
+      <div class="guide-tip-title">ONE STEP BACK FOR TWO STEPS FORWARD</div>
+      <div class="guide-tip-body">Knowing when to fold is a strategy in itself. If your hand feels weak, don't just raise — fold, conserve your silver, and approach the next round strategically.</div>
+    </div>
+    <div class="guide-tip">
+      <div class="guide-tip-title">USE THE VISIBLE CARD</div>
+      <div class="guide-tip-body">One of every opponent's cards is always visible. Use this information to reason about what hands they could possibly hold before deciding how aggressively to bet.</div>
+    </div>
+    <div class="guide-tip">
+      <div class="guide-tip-title">BEWARE RED 4</div>
+      <div class="guide-tip-body">If an opponent's visible card is Red 4, they could be holding Warden, High Warden, or Executor. Unless your hand is very strong, folding is the safer play.</div>
+    </div>
+    <div class="guide-tip">
+      <div class="guide-tip-title">ALL IN EARLY WITH A STRONG HAND</div>
+      <div class="guide-tip-body">Opponents tend to call All In bets in the first round even with weak cards. If you have Five Points or better, going All In immediately can win a huge pot in one move.</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ── SCREEN: Five-Card Rules & Guide ── -->
+<div class="screen scroll-body" id="screen-guide-fc">
+  <div class="app-header">
+    <button class="back-btn visible" onclick="goBack()">‹</button>
+    <button class="home-btn" onclick="newGame()">⌂</button>
+    <div class="app-logo">CRIMSON DESERT</div>
+    <div class="app-title">FIVE-CARD GUIDE</div>
+    <div class="header-rule"></div>
+  </div>
+
+  <!-- Overview -->
+  <div class="guide-section">
+    <div class="guide-section-title">WHAT IS FIVE-CARD?</div>
+    <div class="guide-body">
+      <p>Five-Card is played with <strong>40 cards</strong> — two full sets of 20, each numbered 1 to 10 with one Red and one Yellow of every number. Red cards are essential for forming the strongest hands in the game.</p>
+      <p>Each player receives <strong>5 cards</strong>. From these, you must combine exactly <strong>3 cards</strong> that sum to 10, 20, or 30. The remaining 2 cards become your actual hand. The player with the strongest 2-card hand wins the pot.</p>
+      <p>If no valid 3-card group can be formed, you are in a <strong>Bust</strong> — an instant loss regardless of what your remaining 2 cards are.</p>
+    </div>
+  </div>
+
+  <!-- Forming your hand -->
+  <div class="guide-section">
+    <div class="guide-section-title">FORMING YOUR HAND</div>
+    <div class="guide-body">
+      <p>When your 5 cards are dealt, the game automatically finds all valid groupings of 3 cards that sum to 10, 20, or 30. The grouping that produces the <strong>strongest possible 2-card hand</strong> from the remaining cards is selected for you.</p>
+      <p>Your 2 remaining cards are then evaluated as a standard hand — the same scoring rules apply: pairs, Perfect Nine, points by last digit, and so on.</p>
+      <p>One of your <strong>opponent's visible cards</strong> is shown during betting, giving you partial information to read their possible hand before deciding how to bet.</p>
+    </div>
+    <div class="guide-note">Example: You have 1, 2, 3, 5, 8. The group 2+3+5=10 leaves you with 1 and 8 — a One-nine (9 points). The group 1+2+8=11 does not equal 10/20/30, so it is not valid. The game picks the best valid grouping automatically.</div>
+  </div>
+
+  <!-- Betting Actions -->
+  <div class="guide-section">
+    <div class="guide-section-title">BETTING ACTIONS</div>
+    <div class="guide-action-list">
+      <div class="guide-action">
+        <span class="guide-action-name">CHECK</span>
+        <span class="guide-action-desc">Pass the turn without raising the pot. Only available when no raise has been made.</span>
+      </div>
+      <div class="guide-action">
+        <span class="guide-action-name">HALF RAISE</span>
+        <span class="guide-action-desc">Bet half of the total current pot.</span>
+      </div>
+      <div class="guide-action">
+        <span class="guide-action-name">DOUBLE RAISE</span>
+        <span class="guide-action-desc">Bet double the amount raised by the previous player.</span>
+      </div>
+      <div class="guide-action">
+        <span class="guide-action-name">ALL IN</span>
+        <span class="guide-action-desc">Bet all your currently held silver in one move.</span>
+      </div>
+      <div class="guide-action">
+        <span class="guide-action-name">CALL</span>
+        <span class="guide-action-desc">Match the amount raised by the previous player. Auto-selected if the 10-second timer expires.</span>
+      </div>
+      <div class="guide-action">
+        <span class="guide-action-name">FOLD</span>
+        <span class="guide-action-desc">Forfeit the current round and give up your share of the pot.</span>
+      </div>
+    </div>
+    <div class="guide-note">Cards are revealed when the pot can no longer be raised, or when all remaining players match the current bet. You cannot keep playing if your silver falls below the base ante.</div>
+  </div>
+
+  <!-- Hand Rankings -->
+  <div class="guide-section">
+    <div class="guide-section-title">HAND RANKINGS — STRONGEST TO WEAKEST</div>
+    <div class="guide-hand-list">
+
+      <div class="guide-hand">
+        <div class="guide-hand-left"><span class="rank-badge">S</span></div>
+        <div>
+          <div class="guide-hand-name">Ten Pair</div>
+          <div class="guide-hand-cards">10 + 10 (any color)</div>
+          <div class="guide-hand-desc">Wins unconditionally against every hand.</div>
+        </div>
+      </div>
+
+      <div class="guide-divider"></div>
+
+      <div class="guide-hand">
+        <div class="guide-hand-left"><span class="rank-badge">A</span></div>
+        <div>
+          <div class="guide-hand-name">Pair</div>
+          <div class="guide-hand-cards">Two cards of the same number (1–9, any color)</div>
+          <div class="guide-hand-desc">Higher number wins. Pair of 9s beats Pair of 8s, and so on down to One Pair at the bottom.</div>
+        </div>
+      </div>
+
+      <div class="guide-divider"></div>
+
+      <div class="guide-hand">
+        <div class="guide-hand-left"><span class="rank-badge">B</span></div>
+        <div>
+          <div class="guide-hand-name">Perfect Nine</div>
+          <div class="guide-hand-cards">Any two cards where the last digit of their sum is 9</div>
+          <div class="guide-hand-desc">Examples: 1+8, 2+7, 4+5, 9+10. Beats all point hands. Loses to Pairs and above.</div>
+        </div>
+      </div>
+
+      <div class="guide-divider"></div>
+
+      <div class="guide-hand">
+        <div class="guide-hand-left"><span class="rank-badge">C</span></div>
+        <div>
+          <div class="guide-hand-name">Points (8 down to 1)</div>
+          <div class="guide-hand-cards">Any two cards whose sum's last digit is 1–8</div>
+          <div class="guide-hand-desc">Higher last digit wins. Example: 5+9 = 14 → 4 points. 3+8 = 11 → 1 point.</div>
+        </div>
+      </div>
+
+      <div class="guide-hand">
+        <div class="guide-hand-left"><span class="rank-badge">C</span></div>
+        <div>
+          <div class="guide-hand-name">Zero</div>
+          <div class="guide-hand-cards">Any two cards whose sum's last digit is 0</div>
+          <div class="guide-hand-desc">The weakest standard hand. Examples: 1+9=10, 5+5=10, 4+6=10 all give Zero. Beats only Bust.</div>
+        </div>
+      </div>
+
+      <div class="guide-hand">
+        <div class="guide-hand-left"><span class="rank-badge" style="background:rgba(138,38,38,0.2);color:#f87171">X</span></div>
+        <div>
+          <div class="guide-hand-name">Bust</div>
+          <div class="guide-hand-cards">No valid 3-card group summing to 10, 20, or 30</div>
+          <div class="guide-hand-desc">An automatic loss. Even if your remaining 2 cards would form a strong hand, they cannot be used. The hand is dead.</div>
+        </div>
+      </div>
+
+    </div>
+    <div class="guide-note">Scoring works the same as in Duo: add your two card numbers, then keep only the last digit. Example: 6+7 = 13 → 3 points.</div>
+  </div>
+
+  <!-- Tips -->
+  <div class="guide-section">
+    <div class="guide-section-title">TIPS FOR WINNING</div>
+    <div class="guide-tip">
+      <div class="guide-tip-title">HEART OF A BEAST</div>
+      <div class="guide-tip-body">Match results aren't decided by hand strength alone. A bold raise with a weak hand can force opponents to fold — making them believe their own cards are inferior.</div>
+    </div>
+    <div class="guide-tip">
+      <div class="guide-tip-title">ONE STEP BACK FOR TWO STEPS FORWARD</div>
+      <div class="guide-tip-body">Knowing when to fold is a strategy in itself. If your hand feels weak, don't just raise — fold, conserve your silver, and approach the next round strategically.</div>
+    </div>
+    <div class="guide-tip">
+      <div class="guide-tip-title">ALL IN EARLY WITH A STRONG HAND</div>
+      <div class="guide-tip-body">A Pair of 7s or better is worth going All In on immediately. Opponents frequently call large bets in the first round even with weak hands, making early pots very large.</div>
+    </div>
+    <div class="guide-tip">
+      <div class="guide-tip-title">BUST IS AN INSTANT LOSS</div>
+      <div class="guide-tip-body">If you cannot form a group of 3 summing to 10, 20, or 30, you lose immediately — no matter what your remaining 2 cards are. Fold early if you suspect a Bust rather than waste silver on a dead hand.</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ── SCREEN 3 (Duo): Pick your hand ── -->
+<div class="screen scroll-body" id="screen-duo-hand">
+  <div class="app-header">
+    <button class="back-btn" id="back-duo-hand" onclick="goBack()">‹</button>
+    <button class="home-btn" onclick="newGame()">⌂</button>
+    <div class="app-logo">CRIMSON DESERT</div>
+    <div class="app-title">ODDS CALCULATOR</div>
+    <div class="header-rule"></div>
+  </div>
+  <div class="breadcrumb" id="bc-duo-hand"></div>
+  <div class="question-text" style="margin-bottom:20px"><span>WHAT IS YOUR HAND?</span></div>
+  <div class="tier-section">
+    <div class="tier-row">
+      <button class="tier-btn solo" onclick="pickDuoHand({type:'prime_pair',rank:100,label:'Prime Pair',fallback:1})">Prime Pair <span class="dot s"></span></button>
+      <button class="tier-btn" onclick="pickDuoHand({type:'superior_pair',rank:90,label:'Superior Pair',fallback:0})">Superior Pair <span class="dot s"></span></button>
+      <button class="tier-btn" onclick="pickDuoHand({type:'ten_pair',rank:80,label:'Ten Pair',fallback:0})">Ten Pair <span class="dot s"></span></button>
+    </div>
+    <div class="tier-divider"></div>
+    <div class="tier-row">
+      <button class="tier-btn" onclick="showDuoHandValue('pair')">Pair › <span class="dot a"></span></button>
+      <button class="tier-btn" onclick="pickDuoHand({type:'one_two',rank:60,label:'One-two',fallback:3})">One-two <span class="dot a"></span></button>
+      <button class="tier-btn" onclick="pickDuoHand({type:'one_four',rank:59,label:'One-four',fallback:5})">One-four <span class="dot a"></span></button>
+      <button class="tier-btn" onclick="pickDuoHand({type:'one_nine',rank:58,label:'One-nine',fallback:0})">One-nine <span class="dot a"></span></button>
+      <button class="tier-btn" onclick="pickDuoHand({type:'one_ten',rank:57,label:'One-ten',fallback:1})">One-ten <span class="dot a"></span></button>
+      <button class="tier-btn" onclick="pickDuoHand({type:'four_ten',rank:56,label:'Four-ten',fallback:4})">Four-ten <span class="dot a"></span></button>
+      <button class="tier-btn" onclick="pickDuoHand({type:'four_six',rank:55,label:'Four-six',fallback:0})">Four-six <span class="dot a"></span></button>
+      <button class="tier-btn" onclick="pickDuoHand({type:'perfect_nine',rank:50,label:'Perfect Nine',fallback:9})">Perfect Nine <span class="dot a"></span></button>
+    </div>
+    <div class="tier-divider"></div>
+    <div class="tier-row">
+      <button class="tier-btn" onclick="showDuoHandValue('points')">Points › <span class="dot c"></span></button>
+      <button class="tier-btn" onclick="pickDuoHand({type:'zero',rank:0,label:'Zero',fallback:0})">Zero <span class="dot c"></span></button>
+    </div>
+    <div class="tier-divider"></div>
+    <div class="tier-row">
+      <button class="tier-btn" onclick="pickDuoHand({type:'high_warden',rank:-1,label:'High Warden',fallback:3})">High Warden <span class="dot b"></span></button>
+      <button class="tier-btn" onclick="pickDuoHand({type:'warden',rank:-1,label:'Warden',fallback:3})">Warden <span class="dot b"></span></button>
+      <button class="tier-btn" onclick="pickDuoHand({type:'executor',rank:-1,label:'Executor',fallback:1})">Executor <span class="dot b"></span></button>
+      <button class="tier-btn" onclick="pickDuoHand({type:'judge',rank:-2,label:'Judge',fallback:0})">Judge <span class="dot b"></span></button>
+    </div>
+  </div>
+</div>
+
+<!-- ── SCREEN 3 (FC): Pick your hand ── -->
+<div class="screen scroll-body" id="screen-fc-hand">
+  <div class="app-header">
+    <button class="back-btn" id="back-fc-hand" onclick="goBack()">‹</button>
+    <button class="home-btn" onclick="newGame()">⌂</button>
+    <div class="app-logo">CRIMSON DESERT</div>
+    <div class="app-title">ODDS CALCULATOR</div>
+    <div class="header-rule"></div>
+  </div>
+  <div class="breadcrumb" id="bc-fc-hand"></div>
+  <div class="question-text" style="margin-bottom:20px"><span>WHAT IS YOUR HAND?</span></div>
+  <div class="tier-section">
+    <div class="tier-row" id="fc-superior-row" style="display:none"></div>
+    <div class="tier-row">
+      <button class="tier-btn solo" onclick="pickFcHand(80, 'Ten Pair')">Ten Pair <span class="dot s"></span></button>
+    </div>
+    <div class="tier-divider"></div>
+    <div class="tier-row">
+      <button class="tier-btn" onclick="showFcHandValue('pair')">Pair › <span class="dot a"></span></button>
+      <button class="tier-btn" onclick="pickFcHand(50, 'Perfect Nine')">Perfect Nine <span class="dot a"></span></button>
+    </div>
+    <div class="tier-divider"></div>
+    <div class="tier-row">
+      <button class="tier-btn" onclick="showFcHandValue('points')">Points › <span class="dot c"></span></button>
+      <button class="tier-btn" onclick="pickFcHand(0, 'Zero')">Zero <span class="dot c"></span></button>
+    </div>
+  </div>
+</div>
+
+<!-- ── SCREEN 3b: Hand value picker (shared Duo + FC) ── -->
+<div class="screen" id="screen-handvalue">
+  <div class="app-header">
+    <button class="back-btn" id="back-handvalue" onclick="goBack()">‹</button>
+    <button class="home-btn" onclick="newGame()">⌂</button>
+    <div class="app-logo">CRIMSON DESERT</div>
+    <div class="app-title">ODDS CALCULATOR</div>
+    <div class="header-rule"></div>
+  </div>
+  <div class="breadcrumb" id="bc-handvalue"></div>
+  <div class="question-wrap">
+    <div class="question-text" id="handvalue-question"><span></span></div>
+    <div class="choice-group" id="handvalue-btns" style="max-width:340px;"></div>
+  </div>
+</div>
+
+<!-- ── SCREEN 4: Opponent Cards ── -->
+<div class="screen scroll-body" id="screen-opphand">
+  <div class="app-header">
+    <button class="back-btn" id="back-opphand" onclick="goBack()">‹</button>
+    <button class="home-btn" onclick="newGame()">⌂</button>
+    <div class="app-logo">CRIMSON DESERT</div>
+    <div class="app-title">ODDS CALCULATOR</div>
+    <div class="header-rule"></div>
+  </div>
+  <div class="breadcrumb" id="bc-opphand"></div>
+  <div class="section">
+    <div class="section-title" id="opphand-title">OPPONENTS — VISIBLE CARDS</div>
+    <div id="opp-cards-ui"></div>
+  </div>
+  <div class="submit-wrap">
+    <button class="submit-btn" id="opphand-submit" onclick="submitOppHand()" disabled>
+      CALCULATE ODDS →
+    </button>
+  </div>
+</div>
+
+<!-- ── SCREEN 5: Results ── -->
+<div class="screen scroll-body" id="screen-results">
+  <div class="app-header">
+    <button class="back-btn" id="back-results" onclick="goBack()">‹</button>
+    <button class="home-btn" onclick="newGame()">⌂</button>
+    <div class="app-logo">CRIMSON DESERT</div>
+    <div class="app-title">ODDS CALCULATOR</div>
+    <div class="header-rule"></div>
+  </div>
+  <div class="breadcrumb" id="bc-results"></div>
+  <div class="section">
+    <div class="section-title">RESULTS</div>
+    <div id="results-ui"></div>
+  </div>
+
+  <div class="play-again-section">
+    <div class="play-again-question">PLAY AGAIN?</div>
+    <div class="play-again-btns">
+      <button class="play-again-btn again-btn" onclick="playAgain()">AGAIN</button>
+      <button class="play-again-btn" onclick="newGame('duo')">DUO</button>
+      <button class="play-again-btn" onclick="newGame('fc')">FIVE-CARD</button>
+    </div>
+  </div>
+
+  <div class="history-section" id="history-section">
+    <div class="history-header" onclick="toggleHistory()">
+      <span class="history-title">CALCULATION HISTORY</span>
+      <span class="history-toggle" id="history-toggle">▼ SHOW</span>
+    </div>
+    <div class="history-list" id="history-list"></div>
+  </div>
+</div>
+
+<!-- ── Hands drawer ── -->
+<button class="checker-tab visible" id="checker-tab" onclick="openChecker()">IDENTIFY</button>
+<button class="drawer-tab visible" id="drawer-tab" onclick="openDrawer()">HANDS</button>
+<button class="cheats-tab" id="cheats-tab" onclick="openCheats()">CHEAT</button>
+<div class="drawer-overlay" id="drawer-overlay" onclick="closeDrawer()"></div>
+<div class="drawer-panel" id="drawer-panel">
+  <div class="drawer-header">
+    <div class="drawer-title" id="drawer-title">HAND RANKINGS</div>
+    <button class="drawer-close" onclick="closeDrawer()">✕</button>
+  </div>
+  <div class="drawer-body" id="drawer-body"></div>
+</div>
+
+<!-- ── Settings modal ── -->
+<div class="modal-overlay" id="settings-overlay" onclick="closeSettings()"></div>
+<div class="modal-panel" id="settings-panel">
+  <div class="modal-header">
+    <div class="modal-title">SETTINGS</div>
+    <button class="drawer-close" onclick="closeSettings()">✕</button>
+  </div>
+  <div class="modal-body">
+    <div class="setting-row" style="flex-direction:column; align-items:flex-start; gap:12px;">
+      <div class="setting-info" style="width:100%;">
+        <div class="setting-name">PRECISION LEVEL</div>
+        <div class="setting-desc">Adjust the Monte Carlo simulation samples for Five-Card odds. Higher precision requires more power.</div>
+      </div>
+      <div class="precision-group">
+        <button class="precision-btn" id="prec-high" onclick="setPrecision('high')">10,000<br><span>HIGH</span></button>
+        <button class="precision-btn" id="prec-normal" onclick="setPrecision('normal')">6,000<br><span>NORMAL</span></button>
+        <button class="precision-btn" id="prec-low" onclick="setPrecision('low')">1,500<br><span>LOW</span></button>
+      </div>
+    </div>
+    <div style="height:16px"></div>
+    <div class="setting-row">
+      <div class="setting-info">
+        <div class="setting-name">CHEATING INFO</div>
+        <div class="setting-desc">Show cheating mechanics in the guides and unlock the Cheats reference drawer.</div>
+      </div>
+      <button class="toggle-btn" id="toggle-cheats" onclick="toggleSetting('showCheats')"></button>
+    </div>
+  </div>
+</div>
+
+<!-- ── Hand Checker drawer ── -->
+<div class="drawer-overlay" id="checker-overlay" onclick="closeChecker()"></div>
+<div class="drawer-panel" id="checker-panel">
+  <div class="drawer-header">
+    <div class="drawer-title">HAND CHECKER</div>
+    <button class="drawer-close" onclick="closeChecker()">✕</button>
+  </div>
+  <div class="checker-game-toggle" id="checker-toggle">
+    <button class="checker-toggle-btn active" id="ctog-duo" onclick="checkerSetGame('duo')">DUO</button>
+    <button class="checker-toggle-btn" id="ctog-fc" onclick="checkerSetGame('fc')">FIVE-CARD</button>
+  </div>
+  <div class="drawer-body" id="checker-body"></div>
+</div>
+
+<!-- ── Cheats drawer ── -->
+<div class="drawer-overlay" id="cheats-overlay" onclick="closeCheats()"></div>
+<div class="drawer-panel" id="cheats-panel">
+  <div class="drawer-header">
+    <div class="drawer-title">CHEATING GUIDE</div>
+    <button class="drawer-close" onclick="closeCheats()">✕</button>
+  </div>
+  <div class="drawer-body" id="cheats-body"></div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
