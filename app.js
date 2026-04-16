@@ -34,6 +34,11 @@ function setPrecision(level) {
   MC_SAMPLES = level === 'high' ? 10000 : level === 'low' ? 1500 : 6000;
   saveSettings();
   updateSettingsUI();
+
+  logAnalyticsEvent('change_precision', {
+    precision_level: level,
+    sample_count: MC_SAMPLES
+  });
 }
 
 function updateSettingsUI() {
@@ -48,6 +53,11 @@ function toggleSetting(key) {
   saveSettings();
   updateSettingsUI();
   if (key === 'showCheats') applyCheatVisibility();
+
+  logAnalyticsEvent('change_setting', {
+    setting_key: key,
+    new_value: settings[key]
+  });
 }
 
 function applyCheatVisibility() {
@@ -107,6 +117,19 @@ function addToHistory() {
   const entries = loadHistory();
   entries.unshift(entry);
   saveHistory(entries.slice(0, HISTORY_MAX));
+}
+
+// ─────────────────────────────────────────
+// ANALYTICS BRIDGE
+// ─────────────────────────────────────────
+function logAnalyticsEvent(name, params) {
+  // If user includes Firebase JS SDK later, this will work. 
+  // For now, it maps out the choices to the console for debugging
+  console.log(`[Analytics Event] ${name}:`, params);
+  
+  if (window.gtag) {
+    window.gtag('event', name, params);
+  }
 }
 
 function adviceFromPcts(winPct, losePct) {
@@ -227,6 +250,11 @@ function showScreen(id, addToHistory = true) {
   closeDrawer();
   updateBackBtns();
   saveSession();
+
+  logAnalyticsEvent('screen_view', {
+    screen_id: id,
+    previous_screen: current ? current.id : 'none'
+  });
 }
 
 function goBack() {
@@ -249,10 +277,15 @@ function openDrawer() {
   closeChecker();
   document.getElementById('drawer-overlay').classList.add('open');
   document.getElementById('drawer-panel').classList.add('open');
-  document.getElementById('drawer-title').textContent =
-    state.game === 'fc' ? 'FIVE-CARD HANDS' : 'DUO HANDS';
+  const title = state.game === 'fc' ? 'FIVE-CARD HANDS' : 'DUO HANDS';
+  document.getElementById('drawer-title').textContent = title;
   document.getElementById('drawer-body').innerHTML =
     state.game === 'fc' ? drawerFcHtml() : drawerDuoHtml();
+
+  logAnalyticsEvent('open_drawer', {
+    type: 'hand_rankings',
+    game_mode: state.game || 'none'
+  });
 }
 
 function closeDrawer() {
@@ -280,6 +313,10 @@ function openChecker() {
   renderCheckerUI();
   document.getElementById('checker-overlay').classList.add('open');
   document.getElementById('checker-panel').classList.add('open');
+
+  logAnalyticsEvent('open_drawer', {
+    type: 'hand_checker'
+  });
 }
 
 function closeChecker() {
@@ -298,6 +335,10 @@ function openCheats() {
   document.getElementById('cheats-body').innerHTML = drawerCheatsHtml();
   document.getElementById('cheats-overlay').classList.add('open');
   document.getElementById('cheats-panel').classList.add('open');
+
+  logAnalyticsEvent('open_drawer', {
+    type: 'cheating_guide'
+  });
 }
 
 function closeCheats() {
@@ -471,14 +512,23 @@ function checkerCardUpdate(idx, type, val) {
 function getCheckerResult() {
   const isDuo = checkerState.game === 'duo';
   const cards = checkerState.cards;
+  let res;
   if (isDuo) {
     if (!cards[0]?.number || !cards[0]?.color || !cards[1]?.number || !cards[1]?.color) return null;
-    return duoEval(cards[0], cards[1]);
+    res = duoEval(cards[0], cards[1]);
   } else {
     if (cards.some(c => !c.number)) return null;
     const withColor = cards.map(c => ({number:c.number, color: c.color || 'red'}));
-    return findBestHand(withColor);
+    res = findBestHand(withColor);
   }
+
+  if (res) {
+    logAnalyticsEvent('identify_hand', {
+      game_mode: checkerState.game,
+      identified_as: res.label
+    });
+  }
+  return res;
 }
 
 function renderCheckerUI() {
@@ -789,6 +839,15 @@ function submitOppHand() {
   triggerHaptic('success');
   addToHistory();
   renderHistorySection();
+  
+  // Log the "Mapping" event
+  logAnalyticsEvent('calculate_odds', {
+    game_type: state.game,
+    opponent_count: state.oppCount,
+    user_hand: state.game === 'duo' ? state.duoHandRank?.label : state.fcHandRank?.label,
+    opponent_cards: state.oppCards.map(c => c.number + (c.color ? c.color[0] : '')).join(',')
+  });
+
   showScreen('screen-results');
 }
 
@@ -919,6 +978,8 @@ function renderDuoResults() {
   const myHand = state.duoHandRank;
   let html = '';
 
+  html += renderSelectionRecap();
+  
   html += `<div class="hand-label">YOUR HAND</div>`;
   html += `<div class="hand-badge">${myHand.label}</div>`;
 
@@ -1110,6 +1171,8 @@ function renderFcResults() {
   const myHand = state.fcHandRank; // {rank, label} from hand picker
   let html = '';
 
+  html += renderSelectionRecap();
+
   html += `<div class="hand-label">YOUR HAND</div>`;
   html += `<div class="hand-badge">${myHand.label}</div>`;
 
@@ -1176,6 +1239,33 @@ function chipHtml(c) {
   const cls = c.color === 'red' ? 'red' : 'yellow';
   const lbl = (c.color === 'red' ? 'R' : 'Y') + c.number;
   return `<span class="chip ${cls}">${lbl}</span>`;
+}
+
+function renderSelectionRecap() {
+  const isDuo = state.game === 'duo';
+  const hand = isDuo ? state.duoHandRank?.label : state.fcHandRank?.label;
+  
+  let html = `<div class="selection-recap">
+    <div class="recap-title">Selection Summary</div>
+    <div class="recap-grid">
+      <div class="recap-item">
+        <div class="recap-label">Game</div>
+        <div class="recap-value">${isDuo ? 'Duo' : 'Five-Card'}</div>
+      </div>
+      <div class="recap-item">
+        <div class="recap-label">Opponents</div>
+        <div class="recap-value">${state.oppCount}</div>
+      </div>
+    </div>
+    <div style="height:12px"></div>
+    <div class="recap-item">
+      <div class="recap-label">Opponent Visible Cards</div>
+      <div class="recap-cards">
+        ${state.oppCards.map(c => chipHtml({number: c.number, color: c.color || 'yellow'})).join('')}
+      </div>
+    </div>
+  </div>`;
+  return html;
 }
 
 // ─────────────────────────────────────────
