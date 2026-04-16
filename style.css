@@ -407,6 +407,49 @@ body::before {
   letter-spacing: 3px; text-align: center;
 }
 
+/* ── Selection Recap ── */
+.selection-recap {
+  background: rgba(201,164,74,0.03);
+  border: 1px dashed var(--gold-dim);
+  border-radius: 12px;
+  padding: 14px;
+  margin-bottom: 24px;
+}
+.recap-title {
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: var(--text-dim);
+  margin-bottom: 12px;
+  text-transform: uppercase;
+}
+.recap-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.recap-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.recap-label {
+  font-size: 9px;
+  color: var(--gold);
+  letter-spacing: 1px;
+  opacity: 0.8;
+}
+.recap-value {
+  font-size: 12px;
+  color: var(--text);
+  letter-spacing: 0.5px;
+}
+.recap-cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 2px;
+}
+
 /* ── Play Again ── */
 .play-again-section {
   margin-top: 28px;
