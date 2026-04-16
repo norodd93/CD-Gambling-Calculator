@@ -19,8 +19,8 @@
     "path": "C:\\Users\\norodd\\Downloads\\Telegram Desktop\\CD Gambling Calculator\\android.keystore",
     "alias": "cdcalculator"
   },
-  "appVersionName": "5",
-  "appVersionCode": 5,
+  "appVersionName": "12",
+  "appVersionCode": 12,
   "shortcuts": [],
   "generatorApp": "bubblewrap-cli",
   "webManifestUrl": "https://norodd93.github.io/CD-Gambling-Calculator/manifest.json",
@@ -33,7 +33,7 @@
   "isChromeOSOnly": false,
   "isMetaQuest": false,
   "fullScopeUrl": "https://norodd93.github.io/CD-Gambling-Calculator/",
-  "minSdkVersion": 21,
+  "minSdkVersion": 23,
   "orientation": "portrait-primary",
   "fingerprints": [],
   "additionalTrustedOrigins": [],
@@ -42,5 +42,5 @@
   "fileHandlers": [],
   "launchHandlerClientMode": "",
   "displayOverride": [],
-  "appVersion": "5"
+  "appVersion": "12"
 }
