@@ -2,63 +2,76 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Privacy Policy - Crimson Desert Odds Calculator</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Privacy Policy - Crimson Desert Odds</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --bg: #131109;
+            --surface: #1c1912;
+            --gold: #c9a44a;
+            --text: #e0d8c0;
+            --text-dim: #a09880;
+        }
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            font-family: sans-serif;
+            margin: 0;
+            padding: 24px;
             line-height: 1.6;
-            color: #333;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #f9f9f9;
         }
-        .container {
-            background: #fff;
-            padding: 40px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        h1, h2 {
+            font-family: 'Cinzel', serif;
+            color: var(--gold);
+            letter-spacing: 1px;
         }
-        h1 { color: #131109; border-bottom: 2px solid #131109; padding-bottom: 10px; }
-        h2 { color: #131109; margin-top: 30px; }
-        p { margin-bottom: 15px; }
-        .footer { margin-top: 50px; font-size: 0.8em; color: #777; text-align: center; }
+        h1 { font-size: 24px; border-bottom: 1px solid rgba(201,164,74,0.3); padding-bottom: 12px; margin-bottom: 24px; }
+        h2 { font-size: 18px; margin-top: 32px; }
+        p, li { font-size: 14px; color: var(--text-dim); }
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: var(--gold);
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .container { max-width: 600px; margin: 0 auto; }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Privacy Policy</h1>
-        <p>Last updated: April 14, 2026</p>
+        <p>Last updated: April 28, 2026</p>
 
-        <p>The <strong>Crimson Desert Odds Calculator</strong> ("the App") is provided as a free utility for players of Crimson Desert. This Privacy Policy informs you of our policies regarding the collection, use, and disclosure of personal data when you use our App.</p>
+        <p>This Privacy Policy describes how the Crimson Desert Odds Calculator ("the App") collects, uses, and shares your information when you use our services.</p>
 
-        <h2>1. Data Collection</h2>
-        <p>The App is a purely client-side utility. It does <strong>not</strong> collect, store, or transmit any personal information, usage data, or device identifiers to any external servers.</p>
-
-        <h2>2. Local Storage</h2>
-        <p>The App uses your browser's local storage (localStorage) to save your personal preferences (such as calculation precision) and calculation history. This data remains on your device and is never shared with the developer or third parties.</p>
-
-
-        <h2>3. Links to Other Sites</h2>
-        <p>The App may contain links to external sites that are not operated by us. We have no control over and assume no responsibility for the content, privacy policies, or practices of any third-party sites or services.</p>
-
-        <h2>4. Children's Privacy</h2>
-        <p>Our App does not address anyone under the age of 13. We do not knowingly collect personally identifiable information from children under 13.</p>
-
-        <h2>5. Changes to This Privacy Policy</h2>
-        <p>We may update our Privacy Policy from time to time. You are advised to review this page periodically for any changes.</p>
-
-        <h2>6. Contact & Feedback</h2>
-        <p>If you have any questions about this Privacy Policy or would like to provide feedback, you can contact the developer through the following methods:</p>
-        <ul style="list-style-type: none; padding-left: 0;">
-            <li><strong>Email:</strong> <a href="mailto:norodd1993@gmail.com">norodd1993@gmail.com</a></li>
-            <li style="margin-top: 10px;"><strong>GitHub:</strong> Visit our <a href="https://github.com/norodd93/CD-Gambling-Calculator" target="_blank">Repository</a> and open an "Issue" to report bugs or suggest new features. This is the preferred method for technical feedback and bug reports.</li>
+        <h2>1. Information We Collect</h2>
+        <p>We collect information to provide a better experience for our users. This includes:</p>
+        <ul>
+            <li><strong>Usage Data:</strong> We use Firebase Analytics to collect information about how you interact with the app (e.g., game modes selected, screens viewed).</li>
+            <li><strong>Stability & Performance:</strong> We use Firebase Crashlytics and Performance Monitoring to collect crash reports and performance telemetry to help us fix bugs and improve speed.</li>
+            <li><strong>Local Storage:</strong> We store your app settings and calculation history locally on your device using web storage. This data never leaves your device.</li>
         </ul>
 
-        <div class="footer">
-            &copy; 2026 Crimson Desert Odds Calculator
-        </div>
+        <h2>2. Advertising</h2>
+        <p>The App displays advertisements using Google AdMob. Google and its partners may use cookies or unique device identifiers to serve ads based on your visit to this App and/or other sites on the Internet.</p>
+
+        <h2>3. Data Security</h2>
+        <p>The security of your data is important to us. We use industry-standard services (Google Firebase) to handle telemetry data, which is transmitted over encrypted connections.</p>
+
+        <h2>4. Your Rights</h2>
+        <p>Since we do not collect personal identifiers like names, emails, or phone numbers, we cannot identify specific users. Telemetry data is aggregated and anonymized.</p>
+
+        <h2>5. Changes to This Policy</h2>
+        <p>We may update our Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page.</p>
+
+        <h2>6. Contact &amp; Feedback</h2>
+        <p>If you have any questions about this Privacy Policy or would like to provide feedback, you can contact the developer through the following methods:</p>
+        <ul>
+            <li><strong>Email:</strong> <a href="mailto:norodd1993@gmail.com" style="color: var(--gold);">norodd1993@gmail.com</a></li>
+            <li style="margin-top: 10px;"><strong>PlayStore:</strong> Visit my <a href="https://play.google.com/store/apps/details?id=com.norodd.cdcalculator" target="_blank" style="color: var(--gold);">Store Page</a>, scroll to the bottom and press "Write Feedback" to report bugs or suggest new features.</li>
+        </ul>
     </div>
 </body>
 </html>
