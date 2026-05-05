@@ -18,7 +18,7 @@
             color: var(--text);
             font-family: sans-serif;
             margin: 0;
-            padding: 24px;
+            padding: calc(24px + env(safe-area-inset-top, 24px)) 24px 24px;
             line-height: 1.6;
         }
         h1, h2 {
@@ -42,7 +42,7 @@
 <body>
     <div class="container">
         <h1>Privacy Policy</h1>
-        <p>Last updated: April 28, 2026</p>
+        <p>Last updated: May 05, 2026</p>
 
         <p>This Privacy Policy describes how the Crimson Desert Odds Calculator ("the App") collects, uses, and shares your information when you use our services.</p>
 
@@ -54,8 +54,9 @@
             <li><strong>Local Storage:</strong> We store your app settings and calculation history locally on your device using web storage. This data never leaves your device.</li>
         </ul>
 
-        <h2>2. Advertising</h2>
-        <p>The App displays advertisements using Google AdMob. Google and its partners may use cookies or unique device identifiers to serve ads based on your visit to this App and/or other sites on the Internet.</p>
+        <h2>2. Advertising and Cookies</h2>
+        <p>The App displays advertisements using Google AdMob. Google and its partners use cookies, unique device identifiers (such as Android AdID), and other local storage technologies to serve personalized ads based on your use of this App and other sites on the Internet.</p>
+        <p><strong>For users in the European Economic Area (EEA), the United Kingdom (UK), and Switzerland:</strong> We request your consent before using cookies, local storage, or personal data to serve personalized advertisements. You can manage or revoke your consent at any time by opening the App Settings and tapping the "REVOKE AD CONSENT" button.</p>
 
         <h2>3. Data Security</h2>
         <p>The security of your data is important to us. We use industry-standard services (Google Firebase) to handle telemetry data, which is transmitted over encrypted connections.</p>
